@@ -1,0 +1,23 @@
+version: "3.7"
+services:
+  evergene-auth:
+    container_name: "evergene-auth"
+    hostname: "evergene-auth"
+    build:
+      context: "."
+    environment:
+    networks:
+      - evergene
+    labels:
+      traefik.enable: true
+      traefik.http.routers.evergene-auth.entrypoints: websecure
+      traefik.http.routers.evergene-auth.rule: Host("${HOST}")
+      traefik.http.routers.evergene-auth.tls: true
+      traefik.http.routers.evergene-auth.tls.certresolver: http
+      traefik.http.routers.evergene-auth_insecure.entrypoints: web
+      traefik.http.routers.evergene-auth_insecure.middlewares: https@file
+      traefik.http.routers.evergene-auth_insecure.rule: Host("${HOST}")
+      traefik.http.services.evergene-auth.loadbalancer.server.scheme: http
+networks:
+  evergene:
+    external: true
