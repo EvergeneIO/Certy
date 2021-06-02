@@ -1,23 +1,74 @@
 version: "3.7"
 services:
-  evergene-auth:
-    container_name: "evergene-auth"
-    hostname: "evergene-auth"
+  proxy:
+    image: "jc21/nginx-proxy-manager:latest"
+    hostname: "proxy"
+    restart: always
+    ports:
+      # Public HTTP Port:
+      - "80:80"
+      # Public HTTPS Port:
+      - "443:443"
+      # Admin Web Port:
+      - "81:81"
+    environment:
+      # If you would rather use Sqlite uncomment this
+      # DB_SQLITE_FILE: ${DB_SQLITE_FILE}
+      # and remove all DB_MYSQL_* lines below
+      DB_MYSQL_HOST: ${DB_MYSQL_HOST}
+      DB_MYSQL_PORT: ${DB_MYSQL_PORT}
+      DB_MYSQL_USER: ${DB_MYSQL_USER}
+      DB_MYSQL_PASSWORD: ${DB_MYSQL_PASSWORD}
+      DB_MYSQL_NAME: ${DB_MYSQL_NAME}
+      # Uncomment this if IPv6 is not enabled on your host
+      # DISABLE_IPV6: ${DISABLE_IPV6}
+    volumes:
+      - ./data/proxy:/data
+      - ./letsencrypt:/etc/letsencrypt
+    depends_on:
+      - db
+    networks:
+      - proxy_default
+  certy:
+    hostname: "certy"
+    restart: always
     build:
       context: "."
     environment:
+      # If you would rather use Sqlite uncomment this
+      # DB_SQLITE_FILE: ${DB_SQLITE_FILE}
+      # and remove all DB_MYSQL_* lines below
+      DB_MYSQL_HOST: ${DB_MYSQL_HOST}
+      DB_MYSQL_PORT: ${DB_MYSQL_PORT}
+      DB_MYSQL_USER: ${DB_MYSQL_USER}
+      DB_MYSQL_PASSWORD: ${DB_MYSQL_PASSWORD}
+      DB_MYSQL_NAME: ${DB_MYSQL_NAME}
+      DOMAINS: ${DOMAINS}
+      # Uncomment this if IPv6 is not enabled on your host
+      # DISABLE_IPV6: ${DISABLE_IPV6}
+    volumes:
+      - ./letsencrypt:/certs
+      - Certy:/data
+    depends_on:
+      - db
     networks:
-      - evergene
-    labels:
-      traefik.enable: true
-      traefik.http.routers.evergene-auth.entrypoints: websecure
-      traefik.http.routers.evergene-auth.rule: Host("${HOST}")
-      traefik.http.routers.evergene-auth.tls: true
-      traefik.http.routers.evergene-auth.tls.certresolver: http
-      traefik.http.routers.evergene-auth_insecure.entrypoints: web
-      traefik.http.routers.evergene-auth_insecure.middlewares: https@file
-      traefik.http.routers.evergene-auth_insecure.rule: Host("${HOST}")
-      traefik.http.services.evergene-auth.loadbalancer.server.scheme: http
+      - proxy_default
+  db:
+    image: ghcr.io/linuxserver/mariadb
+    restart: unless-stopped
+    hostname:
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - ./data/mariadb:/config
 networks:
-  evergene:
-    external: true
+  proxy_default:
+    driver: bridge
+volumes:
+  Certy:

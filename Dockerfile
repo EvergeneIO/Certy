@@ -1,4 +1,4 @@
-FROM node:latest
+FROM hayd/deno:latest
 
 WORKDIR /app
 

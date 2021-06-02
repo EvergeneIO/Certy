@@ -1,0 +1,6 @@
+services:
+  pterodactyl:
+    domain:
+      - domain1
+      - domain2
+    path: "/root/Docker/owo/pto/cert"
