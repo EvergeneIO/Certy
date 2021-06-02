@@ -3,9 +3,8 @@ FROM hayd/deno:latest
 WORKDIR /app
 
 COPY /src ./
-EXPOSE 80
 
-CMD [ "command" ]
+CMD [ "deno", "run", "-A", "mod.ts", ]
 
 # Some other commands
 #COPY package*.json ./
