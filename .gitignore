@@ -1,1 +1,7 @@
 .env
+scripts.ts
+certs
+config
+data
+letsencrypt
+testing

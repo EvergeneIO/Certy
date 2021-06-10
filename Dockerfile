@@ -1,11 +1,11 @@
-FROM hayd/deno:latest
+FROM denoland/deno:alpine-1.10.3
+
+USER deno
 
 WORKDIR /app
 
-COPY /src ./
+COPY ./src ./
 
-CMD [ "deno", "run", "-A", "mod.ts", ]
+RUN deno cache --unstable mod.ts
 
-# Some other commands
-#COPY package*.json ./
-#RUN npm install
+CMD [ "deno", "run", "--allow-env", "--allow-read", "--allow-write", "--allow-net", "--unstable", "./mod.ts" ]

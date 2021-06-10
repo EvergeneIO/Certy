@@ -1,0 +1,5 @@
+certs:
+  cert: cert
+  chain: chain
+  privkey: privkey
+  fullchain: fullchain

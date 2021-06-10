@@ -47,26 +47,25 @@ services:
       # Uncomment this if IPv6 is not enabled on your host
       # DISABLE_IPV6: ${DISABLE_IPV6}
     volumes:
-      - ./letsencrypt:/certs
-      - Certy:/data
+      - ./data/certy/config:/app/config
+      - ./letsencrypt:/app/certs
+      - Certy:/app/data
     depends_on:
       - db
     networks:
       - proxy_default
   db:
-    image: ghcr.io/linuxserver/mariadb
+    image: jc21/mariadb-aria:latest
     restart: unless-stopped
-    hostname:
     environment:
-      PUID: ${PUID}
-      PGID: ${PGID}
-      TZ: ${TZ}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - ./data/mariadb:/config
+    ports:
+      - 3308:3306
 networks:
   proxy_default:
     driver: bridge
