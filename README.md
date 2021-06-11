@@ -99,18 +99,18 @@ DB_MYSQL_USER="npm"
 DB_MYSQL_PASSWORD="npm"
 DB_MYSQL_NAME="npm"
 # Uncomment this if IPv6 is not enabled on your host
-# DISABLE_IPV6: "true"
+#DISABLE_IPV6: "true"
 
-#DB Settings
+# DB Settings
 MYSQL_ROOT_PASSWORD="npm"
 MYSQL_DATABASE="npm"
 MYSQL_USER="npm"
 MYSQL_PASSWORD="npm"
 ```
 
-du kannst die daten aber auch manuell in die `docker-compose.yml` einfügen
+Du kannst die daten aber auch manuell in die `docker-compose.yml` einfügen
 
-nach dem setup der compose findest du nun einen `data` ordner, dort musst du zu `./data/certy/config` navigieren und eine config file namens `certy.yml` erstellen, dies ist die allgemein config datei, hier ein kleines beispiel:
+Nach dem setup der compose findest du nun einen `data` ordner, dort musst du zu `./data/certy/config` navigieren und eine config file namens `certy.yml` erstellen, dies ist die allgemein config datei, hier ein kleines beispiel:
 
 # Config
 
