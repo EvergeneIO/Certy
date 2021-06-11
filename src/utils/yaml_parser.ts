@@ -1,7 +1,7 @@
 import { parse } from "../deps.ts";
 
 export async function yamlParser() {
-  const data = await Deno.readTextFile("./data/certy/config/certy.yml");
+  const data = await Deno.readTextFile("./config/certy.yml")
   if (!data) return {} as Record<string, Service | null>;
 
   const parsed = (await parse(data)) as Config;
