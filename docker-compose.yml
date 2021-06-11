@@ -48,7 +48,7 @@ services:
       # DISABLE_IPV6: ${DISABLE_IPV6}
     volumes:
       - ./data/certy/config:/app/config
-      - ./letsencrypt:/app/certs
+      - ./letsencrypt:/app/letsencrypt
       - Certy:/app/data
     depends_on:
       - db
