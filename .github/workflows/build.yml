@@ -26,14 +26,3 @@ jobs:
           tags: evergene/certy:latest
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
-  readme:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - uses: meeDamian/sync-readme@1.0.6
-      with:
-        user: ${{ secrets.DOCKERHUB_USERNAME }}
-        pass: ${{ secrets.DOCKERHUB_TOKEN }}
-        readme: ./.github/docker/README.md
-        description: true
-        slug: evergene/certy
